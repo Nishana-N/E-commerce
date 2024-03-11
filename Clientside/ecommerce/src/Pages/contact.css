@@ -1,0 +1,24 @@
+/* .section{
+    width: auto;
+    padding: 10px 10px;
+    margin: 10px 10px;
+} */
+button{
+    width: 50%;
+    height: 50px;
+    background-color: black;
+    color: white;
+    font-size: 20px;
+    font-weight: 50px;
+}
+.c2{
+    padding: 6rem 0;
+    
+}
+.c1{
+    padding: 5rem 4rem;
+}
+/* img{
+   margin: 4rem 5rem;
+   width: 85%;
+} */
