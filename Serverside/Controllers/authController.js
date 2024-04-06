@@ -1,3 +1,4 @@
+
 import Usermodel from "../Models/Usermodel.js";
 import { hashPassword, comparePassword } from './../Helpers/authHelpers.js';
 import jwt from 'jsonwebtoken';
@@ -100,13 +101,18 @@ export const loginController = async (req, res) => {
                 name: user.name,
                 email: user.email,
                 phone: user.phone,
-                address: user.address
+                address: user.address,
+                role: user.role,
             },
             token,
         });
     } catch (error) {
         console.log(error)
-        res.status(500).send({ success: false, message: "Failed to login", error })
+        res.status(500).send({
+            success: false,
+            message: "Failed to login",
+            error
+        })
     }
 }
 
@@ -151,6 +157,9 @@ export const forgetPasswordController = async (req, res) => {
         })
     }
 }
+
+
+
 
 
 export const testController = async (req, res) => {

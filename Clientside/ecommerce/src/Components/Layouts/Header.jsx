@@ -46,16 +46,16 @@ const Header = () => {
                             </>) : (<>
 
                                 <li className='nav-item dropdown'>
-                                    <NavLink className="nav dropdown-toggle" href="#" role="button"
+                                    <Link className="nav dropdown-toggle" href="#" role="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">
                                         {auth.user?.name}
-                                    </NavLink>
+                                    </Link>
                                     <ul className='dropdown-menu'>
                                         <li>
-                                            <NavLink to={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}`}
+                                            <Link to={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}`}
                                                 className="dropdown-item">
                                                 Dashboard
-                                            </NavLink>
+                                            </Link>
                                         </li>
 
                                         <li className="nav-item">
@@ -71,8 +71,10 @@ const Header = () => {
 
 
 
-
-                        <Nav.Link to="/cart">CART(0)</Nav.Link>
+                        <li className="nav-item">
+                            <Link to="/cart" className="nav-link active" aria-current="page" >Cart(0)</Link>
+                        </li>
+                        {/* <Nav.Link to="/cart">CART(0)</Nav.Link> */}
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

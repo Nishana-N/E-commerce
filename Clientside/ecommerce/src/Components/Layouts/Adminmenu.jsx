@@ -1,22 +1,33 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const Adminmenu = () => {
   return (
     <div className='text-center'>
         <div className='list-group'>
             <h1>Admin panel</h1>
-            <NavLink to="/dashboard/admin/create-category" className="list-group-item list-item-action">
+            <Link to="/dashboard/admin/create-category" className="list-group-item list-item-action">
                 Create Category
-            </NavLink>
+            </Link>
 
-            <NavLink to="/dashboard/admin/create-product" className="list-group-item list-item-action">
+            <Link to="/dashboard/admin/create-product" className="list-group-item list-item-action">
                 Create Product
-            </NavLink>
+            </Link>
+
+            <Link to="/dashboard/admin/product" className="list-group-item list-item-action">
+              Product
+            </Link>
+
+            <Link to="/dashboard/admin/product/:slug" className="list-group-item list-item-action">
+             Update Product
+            </Link>
+
             
-           <NavLink to="/dashboard/admin/users" className="list-group-item list-item-action">
+           <Link to="/dashboard/admin/users" className="list-group-item list-item-action">
               Users
-            </NavLink>
+            </Link>
+
+           
 
         </div>
 

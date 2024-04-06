@@ -1,7 +1,9 @@
 import React from 'react'
 import Header from './Header'
 import Footer from './Footer'
-import Helmet from 'react-helmet'
+import Helmet from 'react-helmet';
+import {  Toaster } from 'react-hot-toast';
+  import 'react-toastify/dist/ReactToastify.css';
 
 const Layout = ({children,title}) => {
   return (
@@ -11,7 +13,11 @@ const Layout = ({children,title}) => {
         <title>{title}</title>
       </Helmet>
         <Header/>
-        <div>{children}</div>
+        
+        <div>
+        <Toaster/>
+          {children}
+          </div>
         <Footer/>
     </div>
   )

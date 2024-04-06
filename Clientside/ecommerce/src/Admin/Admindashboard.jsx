@@ -1,14 +1,14 @@
-import React from 'react'
-import Layout from '../Components/Layouts/Layout'
-import { useAuth } from '../Context/Auth'
+import React from 'react';
+import Layout from '../Components/Layouts/Layout';
 import Adminmenu from '../Components/Layouts/Adminmenu';
+import { useAuth } from '../Context/Auth';
 
 const Admindashboard = () => {
-  const [auth] = useAuth();
+    const [auth] = useAuth();
   return (
-    
-        <Layout title={"Admin Dashboard"}>
-          <h1>Admin dashboard</h1>
+    <div>
+         <Layout title={"Admin Dashboard"}>
+          
           <div className='container-fluid m-10 p10'>
             <div className='row'>
               <div className='col-md-3'>
@@ -25,7 +25,7 @@ const Admindashboard = () => {
           </div>
         
         </Layout>
-    
+    </div>
   )
 }
 
