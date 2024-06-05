@@ -44,7 +44,7 @@ const Product = () => {
 
                                 {
                                     products.map((item) => (
-                                        <Link
+                                        <Link style={{textDecoration:"none", color:"black"}}
                                             key={item._id}
                                             to={`/dashboard/admin/product/${item.slug}`}>
                                             <Card style={{ width: '18rem' }} key={item._id}>

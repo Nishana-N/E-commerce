@@ -6,10 +6,10 @@ const About = () => {
   return (
     <div>
     <Layout title={"About Us"}>
-    <div className='container'>
-      <div className='row'>
+    <div className='container my-5'>
+      <div className='row align-items-center'>
         <div className='col-md-6'>
-          <img src={aboutus} className='img-fluid' alt='about image'/>
+          <img src={aboutus}  className='img-fluid object-fit' alt='about image'/>
         </div>
         <div className='col-md-6' style={{padding:"9rem 1rem"}}>
           <p style={{fontSize:"1rem"}} >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut 

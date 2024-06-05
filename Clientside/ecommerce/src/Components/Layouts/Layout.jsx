@@ -24,7 +24,7 @@ const Layout = ({children,title}) => {
 }
 
 Layout.defaultProps = {
-  title :"e- Commerceapp",
+  title :"E-Commerceapp",
  
 }
 

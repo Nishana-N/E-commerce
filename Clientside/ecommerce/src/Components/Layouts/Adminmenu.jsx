@@ -18,9 +18,9 @@ const Adminmenu = () => {
               Product
             </Link>
 
-            <Link to="/dashboard/admin/product/:slug" className="list-group-item list-item-action">
+            {/* <Link to="/dashboard/admin/product/:slug" className="list-group-item list-item-action">
              Update Product
-            </Link>
+            </Link> */}
 
             
            <Link to="/dashboard/admin/users" className="list-group-item list-item-action">

@@ -1,6 +1,23 @@
 import slugify from "slugify";
 import Productmodel from "../Models/Productmodel.js";
 import fs from "fs"
+import Categorymodel from "../Models/Categorymodel.js";
+import dotenv  from 'dotenv';
+import braintree from "braintree";
+import Ordermodel from "../Models/Ordermodel.js";
+
+dotenv.config();
+
+const gateway = new braintree.BraintreeGateway({
+    Environment:braintree.Environment.Sandbox,
+    merchantid: process.env.BRAINTREE_MERCHANTID,
+    publickey: process.env.BRAINTREE_PUBLIC_KEY,
+    privatekey: process.env.BRAINTREE_PRIVATE_KEY,
+});
+
+
+
+
 
 export const createProductController = async (req, res) => {
     try {
@@ -175,6 +192,181 @@ export const updateProductController = async (req, res) => {
             error,
         })
     }
-}
+};
 
 
+export const productFilterController = async (req, res) => {
+    try {
+        const { checked , radio } = req.body; //inside checked contain id and radio contain range of price
+        let args = {}; // declared by null  db il filter cheyyan vedi ulla  empty object
+        if(checked.length > 0) args.category = checked; //categorine legth check cheythitt aa value ine empty objectil store cheyya
+        if(radio.length) args.price = { $gte: radio[0], $lte: radio[1]}; //gte means >= lte means <= [0,1]=> namamal fe il price kodthapole ullath [price range kittan]
+        const products = await Productmodel.find(args); //display empty object
+        res.status(200).send({
+            success:true,
+            products,
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({
+            success:false,
+            message:"Error while filtering the products"
+        })
+    }
+};
+
+export const productCountController = async (req,res) => {
+    try {
+        const total = await Productmodel.find({}).estimatedDocumentCount();
+        res.status(200).send({
+            success:true,
+            total,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({
+            message:"Error in product count",
+            success: false,
+            error
+        })
+    }
+};
+
+export const productListController = async (req,res) => {
+    try {
+       const perPage = 6;
+       const page = req.params.page ? req.params.page : 1;
+       const products = await Productmodel
+       .find({})
+       .select("-photo")
+       .skip((page -1) * perPage)
+       .limit(perPage)
+       .sort({createdAt: -1 });
+       res.status(200).send({
+        success:true,
+        products,
+       }) ;
+    } catch (error) {
+        console.log(error)
+        res.status(400).send({
+            success:false,
+            message:"Error in per page ctrl",
+            error
+        })
+    }
+};
+
+export const searchProductController =  async (req, res) => {
+    try {
+        const { keyword } = req.params;
+        const results = await Productmodel
+         .find({
+            $or: [
+                { name: { $regex: keyword, $options: 'i'} }, // regex is an operator for matching
+                { description: {$regex: keyword, $options: "i"} },//i=> specific variable 
+            ],
+         })
+         .select("-photo");//get cheyubo - kodkkanam
+         res.json(results);
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({
+            success: false,
+            message:"Error in search product API",
+            error,
+        });
+    }
+};
+
+export const relatedProductController = async (req,res) => {
+    try {
+        const { pid, cid} = req.params;
+        const products = await Productmodel
+         .find({
+            category: cid,
+            _id: { $ne: pid},
+         })
+         .select("-photo")
+         .limit(3)
+         .populate("category");
+         res.status(200).send({
+            success:true,
+            products,
+         });
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({
+            success:false,
+            message:" Error in searching similar product api",
+            error,
+        });
+    }
+};
+
+//to get product by category
+export const productCategoryController = async (req,res) => {
+    try {
+        const category = await Categorymodel.findOne({slug: req.params.slug});
+        const products = await Productmodel.find({ category }).populate("category");
+        res.status(200).send({
+            success:true,
+            category,
+            products,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({
+            success:false,
+            error,
+            message:"Error in getting products"
+        })
+    }
+};
+
+export const braintreeTokenController = async (req,res) => {
+    try {
+        gateway.clientToken.generate({}, function (err,response) {
+            if(err) {
+                res.status(500).send(err);
+            } else {
+                res.send(response)
+            }
+        });
+    } catch (error) {
+        console.log(error)
+    }
+};
+
+export const braintreePaymentController = async (req,res)=> {
+    try {
+        const { nonce, cart} = req.body;
+        let total = 0;
+        cart.map((i) => {
+            total += i.price;
+        });
+        let newTransaction = gateway.transaction.sale(
+            {
+                amount: total,
+                paymentMethodNonce: nonce,
+                options: {
+                    submitForSettlement : true,
+                },
+            },
+            function (error, result) {
+                if(result) {
+                    const order = new Ordermodel({
+                        products: cart,
+                        payment: result,
+                        buyer: req.user._id,
+                    }).save();
+                    res.json({ ok:true});
+                }  else {
+                    res.status(500).send(error)
+                }
+            }
+        );
+     } catch (error) {
+        console.log(error)
+    }
+};

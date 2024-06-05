@@ -1,5 +1,5 @@
 import  express , {Router} from "express";
-import { forgetPasswordController, loginController, registerController, testController } from "../Controllers/authController.js";
+import { forgetPasswordController, loginController, orderStatusController, registerController, testController, updateProfileController } from "../Controllers/authController.js";
 import { isAdmin, requireSignIn } from "../Middlewares/authMiddleware.js";
 const router = express.Router();
 
@@ -20,6 +20,10 @@ router.get("/test",requireSignIn,isAdmin, testController) //to test route
 router.get("/user-auth", requireSignIn, (req,res) => {
     res.status(200).send({ok:true})
 });
+
+router.put("/profile", requireSignIn, updateProfileController);
+
+router.get("/orders", requireSignIn, orderStatusController)
 
 router.get("/admin-auth", requireSignIn, isAdmin, (req,res) => {
     res.status(200).send({ok : true});

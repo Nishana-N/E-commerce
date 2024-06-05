@@ -19,6 +19,11 @@ import Orders from "./User/Orders"
 import Profile from "./User/Profile"
 import Product from "./Admin/Product"
 import UpdateProduct from "./Admin/UpdateProduct"
+import Search from "./Pages/Search"
+import ProductDetails from "./Pages/ProductDetails"
+import Category from "./Pages/Category"
+import CategoryProducts from "./Pages/CategoryProducts"
+import CartPage from "./Pages/CartPage"
 
 function App() {
   
@@ -50,6 +55,13 @@ function App() {
       <Route path="*" element={<Pagenotfound/>}/>
       <Route path="/register" element={<Register/>}/>
       <Route path="/login" element={<Login/>}/>
+      <Route path="/search" element={<Search/>}/>
+      <Route path="/productdetails/:slug" element={<ProductDetails/>}/>
+      <Route path="/category" element={<Category/>}/>
+      <Route path="/category/:slug" element={<CategoryProducts/>}/>
+
+      <Route path="/cart" element={<CartPage/>}/>
+      
      
       
       <Route path="/forgotpassword" element={<Forgetpassword/>}/>
