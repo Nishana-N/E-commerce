@@ -1,26 +1,58 @@
+// import mongoose from "mongoose";
+// const { Schema, model, models } = mongoose;
+
+// const orderSchema = new  mongoose.Schema(
+//     {
+//         products: [
+//             {
+//                 type:mongoose.ObjectId,
+//                 ref: "products"
+//             }
+//         ],
+//         payment: {},
+//         buyer : {
+//             type: mongoose.ObjectId,
+//             ref:"users"
+//         },
+//         status: {
+//             type: String,
+//             default: "Not process",
+//             enum: ["Not process", "Processing", "Shipped", "Delivered","Cancel"],
+
+//         },
+//     },
+//     { timestamps: true}
+// );
+// const Order = models || model("Order", orderSchema)
+// export default Order;
+
 import mongoose from "mongoose";
 
-const orderSchema = new  mongoose.Schema(
-    {
-        products: [
-            {
-                type:mongoose.ObjectId,
-                ref: "products"
-            }
-        ],
-        payment: {},
-        buyer : {
-            type: mongoose.ObjectId,
-            ref:"users"
-        },
-        status: {
-            type: String,
-            default: "Not process",
-            enum: ["Not process", "Processing", "Shipped", "Delivered","Cancel"],
+const { Schema, model, models } = mongoose;
 
-        },
+const orderSchema = new Schema(
+  {
+    products: [
+      {
+        type: mongoose.ObjectId,
+        ref: "Products",
+      },
+    ],
+    payment: {},
+    buyer: {
+      type: mongoose.ObjectId,
+      ref: "users",
     },
-    { timestamps: true}
+    status: {
+      type: String,
+      default: "Not Process",
+      enum: ["Not Process", "Processing", "Shipped", "Delivered", "Cancel"],
+    },
+  },
+  { timestamps: true }
 );
 
-export default mongoose.model("Order", orderSchema);
+// Check if the model already exists before defining it
+const Order = models.Order || model("Order", orderSchema);
+
+export default Order;
